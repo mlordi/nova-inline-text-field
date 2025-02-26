@@ -15,13 +15,17 @@ class InlineText extends Text
         return parent::resolveAttribute($resource, $attribute);
     }
 
-    public function resolve($resource, ?string $attribute = null):void
+    public function resolve($resource, ?string $attribute = null): void
     {
-        parent::resolve($resource, $attribute);
-
-        /** @var NovaRequest */
-        $novaRequest = app()->make(NovaRequest::class);
-        if ($novaRequest->isFormRequest()) $this->component = 'text-field';
+        parent::resolve($resource, $attribute); // Ensure parent method is properly called
+    
+        /** @var NovaRequest $novaRequest */
+        $novaRequest = app(NovaRequest::class); // Use app() correctly
+    
+        // Ensure we only modify the component for form requests
+        if ($novaRequest->isFormRequest()) {
+            $this->component = 'text-field';
+        }
     }
 
     public function maxWidth(int|null $maxWidthPx = null)
